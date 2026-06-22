@@ -1,6 +1,5 @@
 from fastapi import Depends
 from fastapi import HTTPException
-from fastapi import status
 
 from fastapi.security import OAuth2PasswordBearer
 

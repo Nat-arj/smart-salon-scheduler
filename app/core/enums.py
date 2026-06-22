@@ -12,13 +12,19 @@ class SlotStatus(str, Enum):
 
 class AppointmentStatus(str, Enum):
 
+    HELD = "HELD"
+
     BOOKED = "BOOKED"
 
-    CANCELLED = "CANCELLED"
+    COMPLETED = "COMPLETED"
+
+    CUSTOMER_CANCELLED = "CUSTOMER_CANCELLED"
+
+    PRACTITIONER_CANCELLED = "PRACTITIONER_CANCELLED"
 
     RESCHEDULED = "RESCHEDULED"
 
-    COMPLETED = "COMPLETED"
+    NO_SHOW = "NO_SHOW"
 
 class PaymentStatus(str, Enum):
 
@@ -77,3 +83,4 @@ class PaymentType(str, Enum):
     REFUND = "REFUND"
 
     NO_SHOW_FEE = "NO_SHOW_FEE"
+
