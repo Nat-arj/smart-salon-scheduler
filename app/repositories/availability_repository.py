@@ -115,3 +115,11 @@ def get_consecutive_slots(
             consecutive = [slots[i]]
         
     return None
+
+def update_slot_status(db: Session, slot: AvailabilitySlot, status: SlotStatus):
+
+    slot.status = status
+    db.commit()
+    db.refresh(slot)
+
+    return slot

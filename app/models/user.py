@@ -7,7 +7,6 @@ from sqlalchemy import DateTime
 from datetime import datetime
 from datetime import timezone
 
-
 from app.db.database import Base
 
 from app.core.enums import UserRole

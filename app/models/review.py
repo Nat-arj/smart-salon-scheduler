@@ -28,6 +28,7 @@ class Review(Base):
     appointment_id = Column(
         Integer,
         ForeignKey("appointments.id"),
+        unique= True,
         nullable=False
     )
 

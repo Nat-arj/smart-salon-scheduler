@@ -3,6 +3,12 @@ import os
 
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+class Settings:
 
-print(DATABASE_URL)
+    DATABASE_URL = os.getenv("DATABASE_URL")
+
+    DEPOSIT_PERCENTAGE: float = 0.20
+
+    SLOT_DURATION: int = 30
+
+settings = Settings()

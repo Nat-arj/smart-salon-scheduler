@@ -27,7 +27,7 @@ class AvailabilitySlot(Base):
         nullable=False
     )
 
-    date = Column(Date, nullable=False)
+    slot_date = Column(Date, nullable=False)
 
     start_time = Column(Time, nullable=False)
 

@@ -18,3 +18,16 @@ def get_practitioners_by_salon(db:Session, salon_id:int):
         .all()
     )
 
+def update_practitioner_rating(
+    db: Session,
+    practitioner: Practitioner,
+    rating: float,
+    review_count: int
+):
+
+    practitioner.rating = rating
+    practitioner.review_count = review_count
+    db.commit()
+    db.refresh(practitioner)
+
+    return practitioner

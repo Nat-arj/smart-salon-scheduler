@@ -8,6 +8,8 @@ from sqlalchemy import DateTime
 from datetime import datetime
 from datetime import timezone
 
+from sqlalchemy.orm import relationship
+
 from app.db.database import Base
 
 class Salon(Base):
@@ -47,4 +49,9 @@ class Salon(Base):
         DateTime(timezone=True),
         default=lambda: datetime.now(timezone.utc),
         onupdate=lambda: datetime.now(timezone.utc)
+    )
+
+    practitioners = relationship(
+        "Practitioner",
+        back_populates="salon"
     )

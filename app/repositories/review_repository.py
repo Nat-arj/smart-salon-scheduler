@@ -42,3 +42,13 @@ def get_reviews_by_customer(db: Session, customer_id: int):
         .filter(Review.customer_id == customer_id)
         .all()
     )
+
+def get_review_by_appointment(db: Session, appointment_id: int):
+
+    return (
+        db.query(Review)
+        .filter(
+            Review.appointment_id == appointment_id
+        )
+        .first()
+    )

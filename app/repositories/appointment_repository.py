@@ -39,8 +39,8 @@ def get_practitioner_appointments(
     return (
         db.query(Appointment)
         .filter(
-            Appointment.practitioner_id== practitioner_id,
-            Appointment.appointment_date== appointment_date
+            Appointment.practitioner_id == practitioner_id,
+            Appointment.appointment_date == appointment_date
         )
         .all()
     )
@@ -55,7 +55,7 @@ def get_customer_appointments_by_status(
         db.query(Appointment)
         .filter(
             Appointment.customer_id == customer_id,
-            Appointment.status == status
+            Appointment.appointment_status == status
         )
         .all()
     )
@@ -66,7 +66,7 @@ def update_appointment_status(
     status: AppointmentStatus
 ):
 
-    appointment.status = status
+    appointment.appointment_status = status
     db.commit()
     db.refresh(appointment)
 
@@ -84,7 +84,7 @@ def reschedule_appointment(
     appointment.appointment_date = (appointment_date)
     appointment.start_time = start_time
     appointment.end_time = end_time
-    appointment.status = (AppointmentStatus.RESCHEDULED)
+    appointment.appointment_status = (AppointmentStatus.RESCHEDULED)
     db.commit()
     db.refresh(appointment)
 
