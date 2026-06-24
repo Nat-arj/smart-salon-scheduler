@@ -36,3 +36,15 @@ def get_current_unavailability(db: Session, practitioner_id: int):
         .filter(PractitionerUnavailability.practitioner_id == practitioner_id)
         .all()
     )
+
+def get_unavailability_by_id(db: Session, unavailability_id: int):
+
+    return (
+        db.query(PractitionerUnavailability)
+        .filter(
+            PractitionerUnavailability.id
+            ==
+            unavailability_id
+        )
+        .first()
+    )

@@ -2,14 +2,17 @@ from sqlalchemy.orm import Session
 
 from app.models.payment import Payment
 
-from app.core.config import DEPOSIT_PERCENTAGE
+from app.core.config import settings
 
 from app.core.enums import (
     PaymentStatus,
     PaymentType
 )
 
-from app.repositories import payment_repository
+from app.repositories import ( 
+    payment_repository, 
+    appointment_repository,
+    service_repository)
 
 
 def calculate_initial_payment(service_price: float):
@@ -17,7 +20,7 @@ def calculate_initial_payment(service_price: float):
     if service_price < 1000:
         return {"amount": service_price, "payment_type": PaymentType.FULL}
 
-    deposit_amount = (service_price * DEPOSIT_PERCENTAGE)
+    deposit_amount = (service_price * settings.DEPOSIT_PERCENTAGE)
 
     return {"amount": deposit_amount, "payment_type": PaymentType.DEPOSIT}
 
@@ -74,3 +77,74 @@ def is_fully_paid(db: Session, appointment_id: int, total_price: float):
     )
 
     return paid_amount >= total_price
+
+def create_remaining_payment(
+    db: Session,
+    appointment_id: int
+):
+    
+    payments = (
+    payment_repository
+    .get_payments_by_appointment(
+        db,
+        appointment_id
+    )
+)
+    
+    deposit_payment = None
+
+    for payment in payments:
+        if (
+            payment.payment_type == PaymentType.DEPOSIT
+            and
+            payment.payment_status == PaymentStatus.SUCCESS
+        ):
+            deposit_payment = payment
+            break
+
+    if deposit_payment is None:
+        return None
+
+    appointment = (
+    appointment_repository
+    .get_appointment_by_id(
+        db,
+        appointment_id
+    )
+)
+    
+    if appointment is None:
+        return None
+    
+    service = (
+    service_repository
+    .get_service_by_id(
+        db,
+        appointment.service_id
+    )
+)
+    
+    if service is None:
+        return None
+
+    total_amount = service.base_price
+
+    remaining_amount = calculate_remaining_amount(
+    total_amount,
+    deposit_payment.amount
+)
+    
+    remaining_payment = Payment(
+    appointment_id=appointment_id,
+    amount=remaining_amount,
+    payment_type=PaymentType.REMAINING,
+    payment_status=PaymentStatus.PENDING
+)
+
+    return  (
+    payment_repository
+    .create_payment(
+        db,
+        remaining_payment
+    )
+)

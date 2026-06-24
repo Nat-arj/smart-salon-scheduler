@@ -10,3 +10,10 @@ def get_salon_by_id(db: Session, salon_id:int):
 
     return (db.query(Salon).filter(Salon.id == salon_id).first())
 
+def create_salon(db: Session, salon: Salon):
+
+    db.add(salon)
+    db.commit()
+    db.refresh(salon)
+
+    return salon

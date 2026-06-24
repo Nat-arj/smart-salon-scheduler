@@ -1,4 +1,4 @@
-from datetime import date, time, datetime, timedelta
+from datetime import date, time, datetime, timedelta, timezone
 
 from sqlalchemy.orm import Session
 
@@ -119,7 +119,21 @@ def get_consecutive_slots(
 def update_slot_status(db: Session, slot: AvailabilitySlot, status: SlotStatus):
 
     slot.status = status
+
     db.commit()
     db.refresh(slot)
 
     return slot
+
+def get_expired_held_slots(db: Session):
+
+    now = datetime.now(timezone.utc)
+
+    return (
+        db.query(AvailabilitySlot)
+        .filter(
+            AvailabilitySlot.status == SlotStatus.HELD,
+            AvailabilitySlot.hold_until <= now
+        )
+        .all()
+    )

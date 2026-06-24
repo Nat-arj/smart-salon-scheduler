@@ -10,6 +10,16 @@ def get_practitioner_by_id(db: Session, practitioner_id:int):
         .first()
     )
 
+def get_practitioner_by_user_id(db: Session, user_id: int):
+
+    return (
+        db.query(Practitioner)
+        .filter(
+            Practitioner.user_id == user_id
+        )
+        .first()
+    )
+
 def get_practitioners_by_salon(db:Session, salon_id:int):
 
     return (

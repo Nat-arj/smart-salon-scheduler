@@ -61,5 +61,22 @@ def block_unavailability(db: Session, practitioner_id: int, slot_date: date):
                 slot,
                 SlotStatus.UNAVAILABLE
             )
-                
+
+def release_expired_holds(db: Session):
+
+    held_slots = (
+        availability_repository
+        .get_expired_held_slots(db)
+    )
+
+    for slot in held_slots:
+        availability_repository.update_slot_status(
+            db,
+            slot,
+            SlotStatus.AVAILABLE
+        )
+
+        slot.hold_until = None
+
+    return held_slots
 

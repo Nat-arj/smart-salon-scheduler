@@ -62,3 +62,18 @@ def get_payments_by_status(db: Session, status: PaymentStatus):
         .all()
     )
 
+def get_payments_by_practitioner(db: Session, practitioner_id: int):
+
+    return (
+        db.query(Payment)
+        .join(
+            Appointment,
+            Payment.appointment_id == Appointment.id
+        )
+        .filter(
+            Appointment.practitioner_id == practitioner_id
+        )
+        .all()
+    )
+
+

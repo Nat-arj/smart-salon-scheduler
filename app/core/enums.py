@@ -26,16 +26,6 @@ class AppointmentStatus(str, Enum):
 
     NO_SHOW = "NO_SHOW"
 
-class PaymentStatus(str, Enum):
-
-    PENDING = "PENDING"
-
-    SUCCESS = "SUCCESS"
-
-    FAILED = "FAILED"
-
-    REFUNDED = "REFUNDED"
-
 class Sentiment(str, Enum):
 
     POSITIVE = "POSITIVE"
